@@ -9,14 +9,14 @@
 #import <Foundation/Foundation.h>
 
 typedef enum {
-    WeekBegainDayOfSaturday,
-    WeekBegainDayOfMonday,
-    WeekBegainDayOfTuesday,
-    WeekBegainDayOfWednesday,
-    WeekBegainDayThursday,
-    WeekBegainDayFriday,
-    WeekBegainDaySunday,
-}WeekBegainDay;
+    WeekBeginDayOfSaturday,
+    WeekBeginDayOfMonday,
+    WeekBeginDayOfTuesday,
+    WeekBeginDayOfWednesday,
+    WeekBeginDayThursday,
+    WeekBeginDayFriday,
+    WeekBeginDaySunday,
+}WeekBeginDay;
 
 @interface EXCalendarAppearance : NSObject
 
@@ -28,84 +28,139 @@ typedef enum {
 /**
  Start the week on the day of the week.
  */
-@property (nonatomic, assign) WeekBegainDay weekBegainDay;
+@property (nonatomic, assign) WeekBeginDay weekBeginDay;
 
 /**
- Week day height of calendar. Default is 50.
+ Week day height of calendar. the default is to try to divide the height by the number of rows per page.
  */
 @property (nonatomic, assign) CGFloat weekDayHeight;
-///每个月显示多少周
-@property (nonatomic,assign)NSInteger weeksToDisplay;
 
-@property (nonatomic,assign)BOOL isShowSingleWeek;
-///日历背景颜色
-@property (nonatomic,strong)UIColor *calendarBgColor;
-///星期view背景颜色
-@property (nonatomic,strong) UIColor *weekDayBgColor;
-///滚动试图背景颜色
-@property (nonatomic,strong) UIColor *scrollBgcolor;
-///  阳历字体大小
-@property (nonatomic,strong)UIFont *dayTextFont;
+/**
+ Week day counts per counts. default is 5.
+ */
+@property (nonatomic, assign) NSInteger weeksToDisplay;
 
-/// 农历字体大小
-@property (nonatomic,strong)UIFont *lunarDayTextFont;
+/**
+ Calendar background color.
+ */
+@property (nonatomic, strong) UIColor *calendarBgColor;
 
+/**
+ Week day background color.
+ */
+@property (nonatomic, strong) UIColor *weekDayBgColor;
 
-///  阳历文本颜色
-@property (nonatomic,strong)UIColor *dayTextColor;
-///阳历选择后的文本颜色
-@property (strong,nonatomic)UIColor *dayTextColorSelected;
-///  农历文本颜色
-@property (nonatomic,strong)UIColor *lunarDayTextColor;
-/// 农历选择后的文本颜色
-@property (nonatomic,strong)UIColor *lunarDayTextColorSelected;
-/// 今天文本颜色
-@property (strong, nonatomic) UIColor *dayTextColorToday;
+/**
+ Calendar text font.
+ */
+@property (nonatomic, strong) UIFont *dayTextFont;
 
-@property (nonatomic,strong)UIColor *lineBgColor;
-//日历首次选中的时间  默认为今天
-@property (nonatomic,strong)NSDate *defaultDate;
-// 其他月份
+/**
+ Lunar calendar text font.
+ */
+@property (nonatomic, strong) UIFont *lunarDayTextFont;
 
-/// 其他月份阳历字体大小
-@property (nonatomic,strong)UIFont *dayTextFontOtherMonth;
-///  其他月份农历字体大小
-@property (nonatomic,strong)UIFont *lunarDayTextFontOtherMonth;
-///  其他月份阳历文本颜色
-@property (nonatomic,strong)UIColor *dayTextColorOtherMonth;
-///  其他月份农历文本颜色
-@property (nonatomic,strong)UIColor *lunarDayTextColorOtherMonth;
+/**
+ Calendar text color.
+ */
+@property (nonatomic, strong) UIColor *dayTextColor;
 
-/// 选中时日期实心圆的颜色
-@property (strong, nonatomic) UIColor *dayCircleColorSelected;
-/// 今天实心圆的颜色
-@property (nonatomic,strong)  UIColor *dayCircleColorToday;
-///  今天外圈圆的颜色
-@property (strong, nonatomic) UIColor *dayBorderColorToday;
+/**
+ Calendar text selected color.
+ */
+@property (nonatomic, strong) UIColor *dayTextColorSelected;
 
-/// 有事件 点的默认颜色
-@property (nonatomic,strong) UIColor *dayDotColor;
+/**
+ Lunar calendar text color.
+ */
+@property (nonatomic, strong) UIColor *lunarDayTextColor;
 
+/**
+ Lunar calendar text selected color.
+ */
+@property (nonatomic, strong) UIColor *lunarDayTextColorSelected;
 
+/**
+ Today text color.
+ */
+@property (nonatomic, strong) UIColor *dayTextColorToday;
 
-///  日期实心圆的大小
+/**
+ Line color.
+ */
+@property (nonatomic, strong) UIColor *lineBgColor;
+
+/**
+ The calendar's first selected date defaults to today.
+ */
+@property (nonatomic, strong) NSDate *defaultDate;
+
+/**
+ Other months calendar text font.
+ */
+@property (nonatomic, strong) UIFont *dayTextFontOtherMonth;
+
+/**
+ Other months lunar calendar text font.
+ */
+@property (nonatomic, strong) UIFont *lunarDayTextFontOtherMonth;
+
+/**
+ Other months calendar text color.
+ */
+@property (nonatomic, strong) UIColor *dayTextColorOtherMonth;
+
+/**
+ Other months lunar calendar text color.
+ */
+@property (nonatomic, strong) UIColor *lunarDayTextColorOtherMonth;
+
+/**
+ Select the color of the date solid circle.
+ */
+@property (nonatomic, strong) UIColor *dayCircleColorSelected;
+
+/**
+ The color of today's solid circle.
+ */
+@property (nonatomic, strong)  UIColor *dayCircleColorToday;
+
+/**
+ The color of today's outer circle.
+ */
+@property (nonatomic, strong) UIColor *dayBorderColorToday;
+
+/**
+ Default point color for special dates.
+ */
+@property (nonatomic, strong) UIColor *dayDotColor;
+
+/**
+ Date the size of a solid circle.
+ */
 @property (assign, nonatomic) CGFloat dayCircleSize;
-/// 事件点的大小
+
+/**
+ Default point size for special dates.
+ */
 @property (assign, nonatomic) CGFloat dayDotSize;
 
-
-// Weekday
-@property (assign, nonatomic) LTSCalendarWeekDayFormat weekDayFormat;
-/// 周  标识 颜色
+/**
+ Week title text color.
+ */
 @property (strong, nonatomic) UIColor *weekDayTextColor;
-/// 周  标识  字体大小
+
+/**
+ Week title text font.
+ */
 @property (strong, nonatomic) UIFont *weekDayTextFont;
 
-///是否支持 默认选中效果
+/**
+ Whether the default selection effect is supported.
+ */
 @property (nonatomic,assign) BOOL defaultSelected;
 
-@property (nonatomic, assign) NSInteger itemCountPerRow;
 
-@property (nonatomic, assign) NSInteger rowCountPerPage;
++ (EXCalendarAppearance *)apperance;
 
 @end

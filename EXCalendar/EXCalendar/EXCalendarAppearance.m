@@ -10,4 +10,14 @@
 
 @implementation EXCalendarAppearance
 
++ (EXCalendarAppearance *)apperance {
+    static dispatch_once_t onceToken;
+    static id singleton;
+    dispatch_once(&onceToken, ^{
+        singleton = [[EXCalendarAppearance alloc] init];
+    });
+    
+    return singleton;
+}
+
 @end

@@ -14,7 +14,7 @@
     static dispatch_once_t onceToken;
     static id singleton;
     dispatch_once(&onceToken, ^{
-        singleton = [[self alloc] init];
+        singleton = [[EXCalendarManager alloc] init];
     });
     
     return singleton;

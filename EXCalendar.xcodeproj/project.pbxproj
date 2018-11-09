@@ -17,6 +17,8 @@
 		077B3AB221945DDF00D87F8E /* EXCalendarAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 077B3AAB21945DDF00D87F8E /* EXCalendarAppearance.m */; };
 		077B3AB321945DDF00D87F8E /* EXCalendarCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 077B3AAC21945DDF00D87F8E /* EXCalendarCollectionViewFlowLayout.m */; };
 		077B3AB421945DDF00D87F8E /* EXCalendarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 077B3AAF21945DDF00D87F8E /* EXCalendarManager.m */; };
+		07F8E34921958CB8009F8CDA /* EXCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F8E34821958CB8009F8CDA /* EXCalendarView.m */; };
+		07F8E34C21958FDB009F8CDA /* EXCalendarWeekView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F8E34B21958FDB009F8CDA /* EXCalendarWeekView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,10 @@
 		077B3AAE21945DDF00D87F8E /* EXCalendarAppearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXCalendarAppearance.h; sourceTree = "<group>"; };
 		077B3AAF21945DDF00D87F8E /* EXCalendarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXCalendarManager.m; sourceTree = "<group>"; };
 		077B3AB021945DDF00D87F8E /* EXCalendarCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXCalendarCollectionViewFlowLayout.h; sourceTree = "<group>"; };
+		07F8E34721958CB8009F8CDA /* EXCalendarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXCalendarView.h; sourceTree = "<group>"; };
+		07F8E34821958CB8009F8CDA /* EXCalendarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXCalendarView.m; sourceTree = "<group>"; };
+		07F8E34A21958FDB009F8CDA /* EXCalendarWeekView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXCalendarWeekView.h; sourceTree = "<group>"; };
+		07F8E34B21958FDB009F8CDA /* EXCalendarWeekView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXCalendarWeekView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +101,10 @@
 				077B3AAC21945DDF00D87F8E /* EXCalendarCollectionViewFlowLayout.m */,
 				077B3AAA21945DDF00D87F8E /* EXCalendarManager.h */,
 				077B3AAF21945DDF00D87F8E /* EXCalendarManager.m */,
+				07F8E34721958CB8009F8CDA /* EXCalendarView.h */,
+				07F8E34821958CB8009F8CDA /* EXCalendarView.m */,
+				07F8E34A21958FDB009F8CDA /* EXCalendarWeekView.h */,
+				07F8E34B21958FDB009F8CDA /* EXCalendarWeekView.m */,
 			);
 			path = EXCalendar;
 			sourceTree = "<group>";
@@ -169,11 +179,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07F8E34C21958FDB009F8CDA /* EXCalendarWeekView.m in Sources */,
 				077B3A8B21943EBA00D87F8E /* ViewController.m in Sources */,
 				077B3A9621943EBC00D87F8E /* main.m in Sources */,
 				077B3AB221945DDF00D87F8E /* EXCalendarAppearance.m in Sources */,
 				077B3A8821943EBA00D87F8E /* AppDelegate.m in Sources */,
 				077B3AB121945DDF00D87F8E /* EXCalendarCollectionViewCell.m in Sources */,
+				07F8E34921958CB8009F8CDA /* EXCalendarView.m in Sources */,
 				077B3AB321945DDF00D87F8E /* EXCalendarCollectionViewFlowLayout.m in Sources */,
 				077B3AB421945DDF00D87F8E /* EXCalendarManager.m in Sources */,
 			);
