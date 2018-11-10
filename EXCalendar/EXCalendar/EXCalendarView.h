@@ -12,10 +12,19 @@
 
 @interface EXCalendarView : UIView
 
+/**
+ Calendar collection view.
+ */
 @property (nonatomic, strong) UICollectionView *calendarCollectionView;
 
+/**
+ Flow layout.
+ */
 @property (nonatomic, strong) EXCalendarCollectionViewFlowLayout *flowLayout;
 
+/**
+ Week view.
+ */
 @property (nonatomic, strong) EXCalendarWeekView *weekView;
 
 @end

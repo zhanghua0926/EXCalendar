@@ -20,4 +20,31 @@
     return singleton;
 }
 
+
+- (CGFloat)weekTitleHeight {
+    if (_weekTitleHeight <= 0) {
+        return 100;
+    }
+    
+    return _weekTitleHeight;
+}
+
+
+- (CGFloat)weekDayHeight {
+    if (_weekDayHeight <= 0) {
+        return 100;
+    }
+    
+    return _weekDayHeight;
+}
+
+
+- (NSInteger)weeksToDisplay {
+    if (_weeksToDisplay <= 0) {
+        return 5;
+    }
+    
+    return _weeksToDisplay;
+}
+
 @end

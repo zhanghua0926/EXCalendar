@@ -32,13 +32,13 @@
     EXCalendarCollectionViewFlowLayout *flowLayout = [[EXCalendarCollectionViewFlowLayout alloc] init];
     flowLayout.sectionInset = UIEdgeInsetsZero;
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    flowLayout.itemSize = CGSizeMake(100, 100);
-    flowLayout.itemCountPerRow = 3;
-    flowLayout.rowCountPerPage = 3;
+    flowLayout.itemSize = CGSizeMake(self.frame.size.width / 7, [EXCalendarAppearance apperance].weekTitleHeight);
+    flowLayout.itemCountPerRow = 7;
+    flowLayout.rowCountPerPage = [EXCalendarAppearance apperance].weeksToDisplay;
     flowLayout.minimumLineSpacing = 0;
     flowLayout.minimumInteritemSpacing = 0;
     
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(20, 100, self.frame.size.width - 40, 300) collectionViewLayout:flowLayout];
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, [EXCalendarAppearance apperance].weekTitleHeight, self.frame.size.width, self.frame.size.height) collectionViewLayout:flowLayout];
     [self addSubview:collectionView];
     collectionView.delegate = self;
     collectionView.dataSource = self;

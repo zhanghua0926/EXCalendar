@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 typedef enum {
     WeekBeginDayOfSaturday,
@@ -31,7 +32,12 @@ typedef enum {
 @property (nonatomic, assign) WeekBeginDay weekBeginDay;
 
 /**
- Week day height of calendar. the default is to try to divide the height by the number of rows per page.
+ Week title height.
+ */
+@property (nonatomic, assign) CGFloat weekTitleHeight;
+
+/**
+ Week day height of calendar.
  */
 @property (nonatomic, assign) CGFloat weekDayHeight;
 
