@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "EXCalendarWeekView.h"
 #import "EXCalendarCollectionViewFlowLayout.h"
+#import "EXCalendarDayItem.h"
 
 @interface EXCalendarView : UIView
 
@@ -26,5 +27,27 @@
  Week view.
  */
 @property (nonatomic, strong) EXCalendarWeekView *weekView;
+
+
+
+/**
+ All months data.
+ */
+@property (nonatomic, strong) NSArray<NSArray<EXCalendarDayItem *> *> *monthsData;
+
+/**
+ One month data.
+ */
+@property (nonatomic, strong) NSArray<EXCalendarDayItem *> *monthData;
+
+/**
+ Current date.
+ */
+@property (nonatomic, strong) NSDate *currentDate;
+
+/**
+ Selected date.
+ */
+@property (nonatomic, strong) NSDate *selectedDate;
 
 @end

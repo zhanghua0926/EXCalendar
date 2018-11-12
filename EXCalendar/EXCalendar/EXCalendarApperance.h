@@ -1,5 +1,5 @@
 //
-//  EXCalendarAppearance.h
+//  EXCalendarApperance.h
 //  EXCalendar
 //
 //  Created by Eric on 2018/11/8.
@@ -19,7 +19,7 @@ typedef enum {
     WeekBeginDaySunday,
 }WeekBeginDay;
 
-@interface EXCalendarAppearance : NSObject
+@interface EXCalendarApperance : NSObject
 
 /**
  Whether the lunar calendar display.
@@ -164,9 +164,28 @@ typedef enum {
 /**
  Whether the default selection effect is supported.
  */
-@property (nonatomic,assign) BOOL defaultSelected;
+@property (nonatomic, assign) BOOL defaultSelected;
+
+/**
+ Display months.
+ */
+@property (nonatomic, assign) NSInteger months;
 
 
-+ (EXCalendarAppearance *)apperance;
+
+/**
+ EXCalendarAppearance singleton.
+
+ @return EXCalendarAppearance.
+ */
++ (EXCalendarApperance *)apperance;
+
+
+/**
+ Standard calendarc.
+
+ @return calendar.
+ */
+- (NSCalendar *)calendar;
 
 @end

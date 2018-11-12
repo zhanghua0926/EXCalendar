@@ -7,12 +7,12 @@
 //
 
 #import "EXCalendarView.h"
-#import "EXCalendarAppearance.h"
+#import "EXCalendarApperance.h"
 #import "EXCalendarCollectionViewCell.h"
 
 @interface EXCalendarView ()<UICollectionViewDataSource, UICollectionViewDelegate>
 
-@property (nonatomic, strong) EXCalendarAppearance *apperance;
+@property (nonatomic, strong) EXCalendarApperance *apperance;
 
 @end
 
@@ -22,7 +22,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.apperance = [[EXCalendarAppearance alloc] init];
+        self.apperance = [[EXCalendarApperance alloc] init];
     }
     return self;
 }
@@ -32,13 +32,14 @@
     EXCalendarCollectionViewFlowLayout *flowLayout = [[EXCalendarCollectionViewFlowLayout alloc] init];
     flowLayout.sectionInset = UIEdgeInsetsZero;
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    flowLayout.itemSize = CGSizeMake(self.frame.size.width / 7, [EXCalendarAppearance apperance].weekTitleHeight);
+    flowLayout.itemSize = CGSizeMake(self.frame.size.width / 7, [EXCalendarApperance apperance].weekTitleHeight);
     flowLayout.itemCountPerRow = 7;
-    flowLayout.rowCountPerPage = [EXCalendarAppearance apperance].weeksToDisplay;
+    flowLayout.rowCountPerPage = [EXCalendarApperance apperance].weeksToDisplay;
     flowLayout.minimumLineSpacing = 0;
     flowLayout.minimumInteritemSpacing = 0;
     
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, [EXCalendarAppearance apperance].weekTitleHeight, self.frame.size.width, self.frame.size.height) collectionViewLayout:flowLayout];
+    CGRect collectionViewFrame = CGRectMake(0, [EXCalendarApperance apperance].weekTitleHeight, self.frame.size.width, self.frame.size.height - [EXCalendarApperance apperance].weekTitleHeight);
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:collectionViewFrame collectionViewLayout:flowLayout];
     [self addSubview:collectionView];
     collectionView.delegate = self;
     collectionView.dataSource = self;
@@ -49,14 +50,65 @@
 }
 
 
+#pragma mark -LoadData
+- (void)createCalendarData {
+    [self createMonthsData];
+}
+
+
+- (void)createMonthsData {
+    NSCalendar *calendar = [EXCalendarApperance apperance].calendar;
+    
+    
+    if (self.currentDate == nil) {
+        self.currentDate = [EXCalendarApperance apperance].defaultDate;
+        self.selectedDate = self.currentDate;
+    }
+    
+    
+    NSMutableArray *daysInMonths = [@[] mutableCopy];
+    for(int i = 0; i < [EXCalendarApperance apperance].months; i++){
+        NSDateComponents *dayComponent = [[NSDateComponents alloc] init];
+        dayComponent.month = i - [EXCalendarApperance apperance].months / 2;
+        
+        // Half of apperance months before and half of months after the current date.
+        NSDate *monthDate = [calendar dateByAddingComponents:dayComponent toDate:self.currentDate options:0];
+            
+        monthDate = [self beginningOfMonth:monthDate];
+//        [daysInMonths addObject:[self getDaysOfMonth:monthDate]];
+        
+        }
+        
+//    self.daysInMonth = daysInMonths;
+}
+
+
+- (NSDate *)beginningOfMonth:(NSDate *)date {
+    NSCalendar *calendar = [EXCalendarApperance apperance].calendar;
+    
+    NSDateComponents *componentsCurrentDate =[calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday|NSCalendarUnitWeekOfMonth|NSCalendarUnitHour fromDate:date];
+    
+    
+    NSDateComponents *componentsNewDate = [NSDateComponents new];
+    
+    componentsNewDate.year = componentsCurrentDate.year;
+    componentsNewDate.month = componentsCurrentDate.month;
+    componentsNewDate.weekOfMonth = 1;
+    componentsNewDate.weekday = calendar.firstWeekday;
+    
+    return [calendar dateFromComponents:componentsNewDate];
+    
+}
+
+
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
+    return _monthsData.count;
 }
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 1;
+    return _monthsData[section].count;
 }
 
 
