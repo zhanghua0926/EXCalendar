@@ -27,6 +27,11 @@ typedef enum {
 @property (nonatomic, assign) BOOL isShowLunarCalender;
 
 /**
+ Lunar calendar text font.
+ */
+@property (nonatomic, strong) UIFont *lunarDayTextFont;
+
+/**
  Start the week on the day of the week.
  */
 @property (nonatomic, assign) WeekBeginDay weekBeginDay;
@@ -47,24 +52,19 @@ typedef enum {
 @property (nonatomic, assign) NSInteger weeksToDisplay;
 
 /**
- Calendar background color.
- */
-@property (nonatomic, strong) UIColor *calendarBgColor;
-
-/**
  Week day background color.
  */
 @property (nonatomic, strong) UIColor *weekDayBgColor;
 
 /**
+ Calendar background color.
+ */
+@property (nonatomic, strong) UIColor *calendarBgColor;
+
+/**
  Calendar text font.
  */
 @property (nonatomic, strong) UIFont *dayTextFont;
-
-/**
- Lunar calendar text font.
- */
-@property (nonatomic, strong) UIFont *lunarDayTextFont;
 
 /**
  Calendar text color.

@@ -14,6 +14,12 @@
 
 @property (nonatomic, strong) EXCalendarApperance *apperance;
 
+
+/**
+ Current month index.
+ */
+@property (nonatomic,  assign) NSInteger currentMonthIndex;
+
 @end
 
 
@@ -40,13 +46,14 @@
     
     CGRect collectionViewFrame = CGRectMake(0, [EXCalendarApperance apperance].weekTitleHeight, self.frame.size.width, self.frame.size.height - [EXCalendarApperance apperance].weekTitleHeight);
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:collectionViewFrame collectionViewLayout:flowLayout];
-    [self addSubview:collectionView];
     collectionView.delegate = self;
     collectionView.dataSource = self;
     collectionView.pagingEnabled = YES;
     collectionView.showsHorizontalScrollIndicator = false;
     collectionView.backgroundColor =  [UIColor whiteColor];
     [collectionView registerClass:[EXCalendarCollectionViewCell class] forCellWithReuseIdentifier:@"EXCalendarCollectionViewCell"];
+    self.calendarCollectionView = collectionView;
+    [self addSubview:_calendarCollectionView];
 }
 
 
@@ -66,37 +73,108 @@
     }
     
     
-    NSMutableArray *daysInMonths = [@[] mutableCopy];
+    NSMutableArray *monthsData = [@[] mutableCopy];
     for(int i = 0; i < [EXCalendarApperance apperance].months; i++){
         NSDateComponents *dayComponent = [[NSDateComponents alloc] init];
+        
         dayComponent.month = i - [EXCalendarApperance apperance].months / 2;
         
         // Half of apperance months before and half of months after the current date.
         NSDate *monthDate = [calendar dateByAddingComponents:dayComponent toDate:self.currentDate options:0];
             
         monthDate = [self beginningOfMonth:monthDate];
-//        [daysInMonths addObject:[self getDaysOfMonth:monthDate]];
+        [monthsData addObject:[self daysOfMonth:monthDate]];
+    }
         
-        }
-        
-//    self.daysInMonth = daysInMonths;
+    self.monthsData = monthsData;
 }
 
 
 - (NSDate *)beginningOfMonth:(NSDate *)date {
     NSCalendar *calendar = [EXCalendarApperance apperance].calendar;
     
-    NSDateComponents *componentsCurrentDate =[calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday|NSCalendarUnitWeekOfMonth|NSCalendarUnitHour fromDate:date];
+    NSDateComponents *currentDateComponents =[calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday|NSCalendarUnitWeekOfMonth|NSCalendarUnitHour fromDate:date];
+    currentDateComponents.timeZone = [NSTimeZone systemTimeZone];
     
     
-    NSDateComponents *componentsNewDate = [NSDateComponents new];
+    NSDateComponents *components = [NSDateComponents new];
     
-    componentsNewDate.year = componentsCurrentDate.year;
-    componentsNewDate.month = componentsCurrentDate.month;
-    componentsNewDate.weekOfMonth = 1;
-    componentsNewDate.weekday = calendar.firstWeekday;
+    components.year = currentDateComponents.year;
+    components.month = currentDateComponents.month;
+    components.hour = currentDateComponents.hour;
+    components.weekOfMonth = 1;
+    components.weekday = calendar.firstWeekday;
+    components.timeZone = [NSTimeZone systemTimeZone];
     
-    return [calendar dateFromComponents:componentsNewDate];
+    return [calendar dateFromComponents:components];
+    
+}
+
+
+- (NSArray *)daysOfMonth:(NSDate *)date {
+    NSDate *currentDate = date;
+    
+    NSCalendar *calendar = [EXCalendarApperance apperance].calendar;
+    
+    NSMutableArray *monthData = [@[] mutableCopy];
+   
+    NSDateComponents *componets = [calendar components:NSCalendarUnitMonth|NSCalendarUnitDay fromDate:currentDate];
+        
+    self.currentMonthIndex = componets.month;
+    
+    // The first day of the month which is not 1 is the last month.
+    if(componets.day > 1){
+        self.currentMonthIndex = (self.currentMonthIndex % 12) + 1;
+
+    }
+    
+    for (NSInteger i = 0; i < [EXCalendarApperance apperance].weeksToDisplay; i++) {
+        NSDateComponents *dayComponent = [[NSDateComponents alloc] init];
+        dayComponent.day = 7;
+        
+        NSArray *array = [self daysOfWeek:currentDate];
+        
+        [monthData addObjectsFromArray:array];
+        currentDate = [calendar dateByAddingComponents:dayComponent toDate:currentDate options:0];
+    }
+    
+    return monthData;
+}
+
+
+- (NSArray *)daysOfWeek:(NSDate *)date {
+    NSDate *currentDate = date;
+    
+    NSCalendar *calendar = [EXCalendarApperance apperance].calendar;
+    
+    //one week date
+    NSMutableArray *daysOfweek = [@[] mutableCopy];
+    
+    for (int i = 0; i < 7; i++) {
+        NSDateComponents *comps = [calendar components:NSCalendarUnitMonth | NSCalendarUnitWeekOfMonth fromDate:currentDate];
+        NSInteger monthIndex = comps.month;
+        
+        EXCalendarDayItem *item = [[EXCalendarDayItem alloc] init];
+        item.isOtherMonth = monthIndex != self.currentMonthIndex;
+        item.date = currentDate;
+        
+        if ([self isSameDay:currentDate compareDate:_currentDate]) {
+            item.isSelected = YES;
+            
+//            if ([EXCalendarApperance apperance].defaultSelected || !self.currentSelectedIndexPath) {
+//                self.currentSelectedIndexPath = [NSIndexPath indexPathForItem:(comps.weekOfMonth-1)*7+i inSection:round(NUMBER_PAGES_LOADED / 2)];
+//            }
+        }
+        
+        item.eventDotColor = [EXCalendarApperance apperance].dayDotColor;
+        [daysOfweek addObject:item];
+        
+        NSDateComponents *dayComponent = [[NSDateComponents alloc] init];
+        dayComponent.day = 1;
+        
+        currentDate = [calendar dateByAddingComponents:dayComponent toDate:currentDate options:0];
+    }
+    return  daysOfweek;
     
 }
 
@@ -117,17 +195,27 @@
     static NSString * CellIdentifier = @"EXCalendarCollectionViewCell";
     EXCalendarCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     if (!cell) {
-        cell = [[EXCalendarCollectionViewCell alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        cell = [[EXCalendarCollectionViewCell alloc] init];
     }
     
-//    NSString *model = [_demoNumArray objectAtIndex:[indexPath row]];
-//    [cell loadData:model];
+    EXCalendarDayItem *model = [_monthData objectAtIndex:[indexPath row]];
+    [cell loadData:model];
     return cell;
 }
 
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
+}
+
+
+- (BOOL)isSameDay:(NSDate *)date
+      compareDate:(NSDate *)compareDate {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.timeZone = [EXCalendarApperance apperance].calendar.timeZone;
+    dateFormatter.dateFormat = @"yyyy-MM-dd";
+    
+    return [[dateFormatter stringFromDate:date] isEqualToString:[dateFormatter stringFromDate:compareDate]];
 }
 
 @end

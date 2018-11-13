@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EXCalendarDayItem.h"
 
 @interface EXCalendarCollectionViewCell : UICollectionViewCell
+
+/**
+ Load cell data.
+
+ @param model Cell data.
+ */
+- (void)loadData:(EXCalendarDayItem *)model;
 
 @end

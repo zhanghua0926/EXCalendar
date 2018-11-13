@@ -7,8 +7,12 @@
 //
 
 #import "ViewController.h"
+#import "EXCalendarManager.h"
+#import "EXCalendarView.h"
 
 @interface ViewController ()
+
+@property (nonatomic, strong) EXCalendarManager *manager;
 
 @end
 
@@ -17,6 +21,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    self.manager = [EXCalendarManager manager];
+    self.manager.calendarView = [[EXCalendarView alloc] initWithFrame:CGRectMake(10, 150, 300, 400)];
+    [self.manager.calendarView createCalendarData];
+    [self.manager.calendarView.calendarCollectionView reloadData];
+    
+    [self.view addSubview:_manager.calendarView];
 }
 
 

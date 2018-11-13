@@ -7,14 +7,30 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "EXCalendarView.h"
+#import "EXCalendarWeekView.h"
 
 
 @interface EXCalendarManager : NSObject
 
+/**
+ Calendar view.
+ */
+@property (nonatomic, strong) EXCalendarView *calendarView;
+
+/**
+ Calendar week view.
+ */
+@property (nonatomic, strong) EXCalendarWeekView *calendarWeekView;
 
 
-//@property (nonatomic, )
 
+
+/**
+ EXCalendarManager singleton.
+
+ @return EXCalendarManager.
+ */
 + (EXCalendarManager *)manager;
 
 @end
