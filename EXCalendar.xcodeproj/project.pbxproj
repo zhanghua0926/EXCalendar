@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		071C6311219BFD26008A309B /* EXCalendarCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 071C6310219BFD26008A309B /* EXCalendarCircleView.m */; };
 		077B3A8821943EBA00D87F8E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 077B3A8721943EBA00D87F8E /* AppDelegate.m */; };
 		077B3A8B21943EBA00D87F8E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 077B3A8A21943EBA00D87F8E /* ViewController.m */; };
 		077B3A8E21943EBA00D87F8E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 077B3A8C21943EBA00D87F8E /* Main.storyboard */; };
@@ -23,6 +24,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		071C630F219BFD26008A309B /* EXCalendarCircleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXCalendarCircleView.h; sourceTree = "<group>"; };
+		071C6310219BFD26008A309B /* EXCalendarCircleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXCalendarCircleView.m; sourceTree = "<group>"; };
+		071C6312219C52F6008A309B /* EXCalendarDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXCalendarDelegate.h; sourceTree = "<group>"; };
 		077B3A8321943EBA00D87F8E /* EXCalendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EXCalendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		077B3A8621943EBA00D87F8E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		077B3A8721943EBA00D87F8E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -110,6 +114,9 @@
 				07F8E34B21958FDB009F8CDA /* EXCalendarWeekView.m */,
 				07F26B9821991EB300BADA18 /* EXCalendarDayItem.h */,
 				07F26B9921991EB300BADA18 /* EXCalendarDayItem.m */,
+				071C630F219BFD26008A309B /* EXCalendarCircleView.h */,
+				071C6310219BFD26008A309B /* EXCalendarCircleView.m */,
+				071C6312219C52F6008A309B /* EXCalendarDelegate.h */,
 			);
 			path = EXCalendar;
 			sourceTree = "<group>";
@@ -194,6 +201,7 @@
 				077B3AB321945DDF00D87F8E /* EXCalendarCollectionViewFlowLayout.m in Sources */,
 				07F26B9A21991EB300BADA18 /* EXCalendarDayItem.m in Sources */,
 				077B3AB421945DDF00D87F8E /* EXCalendarManager.m in Sources */,
+				071C6311219BFD26008A309B /* EXCalendarCircleView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

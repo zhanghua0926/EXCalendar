@@ -54,4 +54,8 @@
 
 - (void)createCalendarData;
 
+- (void)scrollViewDidScrollToSystemCurrentMonth;
+
+- (void)repositionViews;
+
 @end

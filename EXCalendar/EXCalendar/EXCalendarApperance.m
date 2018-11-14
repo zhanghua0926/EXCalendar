@@ -57,6 +57,51 @@
 }
 
 
+- (UIColor *)dayBorderColorToday {
+    if (!_dayBorderColorToday) {
+        return [UIColor colorWithRed:133./255. green:205./255. blue:243./255. alpha:1.];
+    }
+    
+    return _dayBorderColorToday;
+}
+
+
+- (UIColor *)dayCircleColorToday {
+    if (!_dayCircleColorToday) {
+        return [UIColor colorWithRed:133./255. green:205./255. blue:243./255. alpha:1.];
+    }
+    
+    return _dayCircleColorToday;
+}
+
+
+- (UIColor *)dayCircleColorSelected {
+    if (!_dayCircleColorSelected) {
+        return [UIColor colorWithRed:133./255. green:205./255. blue:243./255. alpha:1.];
+    }
+    
+    return _dayCircleColorSelected;
+}
+
+
+- (UIColor *)dayTextColorToday {
+    if (!_dayTextColorToday) {
+        return [UIColor whiteColor];
+    }
+    
+    return _dayTextColorToday;
+}
+
+
+- (CGFloat)dayCircleSize {
+    if (_dayCircleSize <= 0) {
+        return 40;
+    }
+    
+    return _dayCircleSize;
+}
+
+
 - (NSDate *)defaultDate {
     if (!_defaultDate) {
         

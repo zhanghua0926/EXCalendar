@@ -12,6 +12,11 @@
 @interface EXCalendarCollectionViewCell : UICollectionViewCell
 
 /**
+ Whether the day is selected.
+ */
+@property (nonatomic, assign) BOOL isSelected;
+
+/**
  Load cell data.
 
  @param model Cell data.

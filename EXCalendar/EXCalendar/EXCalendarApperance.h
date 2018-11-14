@@ -139,7 +139,7 @@ typedef enum {
 /**
  Default point color for special dates.
  */
-@property (nonatomic, strong) UIColor *dayDotColor;
+@property (nonatomic, strong) UIColor *dayEventColor;
 
 /**
  Date the size of a solid circle.
@@ -170,6 +170,11 @@ typedef enum {
  Display months.
  */
 @property (nonatomic, assign) NSInteger months;
+
+/**
+ Whether grid lines are displayed.
+ */
+@property (nonatomic, assign) BOOL hiddenGridLine;
 
 
 

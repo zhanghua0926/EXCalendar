@@ -27,9 +27,9 @@
 @property (nonatomic, assign) BOOL isSelected;
 
 /**
- The specified event dot color.
+ The specified event circle color.
  */
-@property (nonatomic, strong) UIColor *eventDotColor;
+@property (nonatomic, strong) UIColor *eventCircleColor;
 
 /**
  Display event dot.

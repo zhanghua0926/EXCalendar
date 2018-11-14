@@ -23,9 +23,10 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     self.manager = [EXCalendarManager manager];
-    self.manager.calendarView = [[EXCalendarView alloc] initWithFrame:CGRectMake(10, 150, 300, 400)];
+    self.manager.calendarView = [[EXCalendarView alloc] initWithFrame:CGRectMake(10, 150, self.view.frame.size.width - 20, 550)];
     [self.manager.calendarView createCalendarData];
     [self.manager.calendarView.calendarCollectionView reloadData];
+    [self.manager.calendarView repositionViews];
     
     [self.view addSubview:_manager.calendarView];
 }
