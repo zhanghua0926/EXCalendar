@@ -10,6 +10,7 @@
 #import "EXCalendarWeekView.h"
 #import "EXCalendarCollectionViewFlowLayout.h"
 #import "EXCalendarDayItem.h"
+#import "EXCalendarDelegate.h"
 
 @interface EXCalendarView : UIView
 
@@ -49,6 +50,11 @@
  Selected date.
  */
 @property (nonatomic, strong) NSDate *selectedDate;
+
+/**
+ EXCalendar delegate.
+ */
+@property (nonatomic, weak) id<EXCalendarDelegate> delegate;
 
 
 

@@ -13,7 +13,6 @@
 - (instancetype)init {
     self = [super init];
     if(self){
-        self.backgroundColor = [UIColor clearColor];
         self.color = [UIColor whiteColor];
     }
     
@@ -24,7 +23,7 @@
 - (void)drawRect:(CGRect)rect {
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
-    CGContextSetFillColorWithColor(ctx, [self.backgroundColor CGColor]);
+    CGContextSetFillColorWithColor(ctx, [[UIColor whiteColor] CGColor]);
     CGContextFillRect(ctx, rect);
     
     rect = CGRectInset(rect, .5, .5);

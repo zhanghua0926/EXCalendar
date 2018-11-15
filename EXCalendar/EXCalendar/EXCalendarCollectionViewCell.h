@@ -17,6 +17,12 @@
 @property (nonatomic, assign) BOOL isSelected;
 
 /**
+ Cell data.
+ */
+@property (nonatomic, strong) EXCalendarDayItem *viewData;
+
+
+/**
  Load cell data.
 
  @param model Cell data.

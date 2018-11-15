@@ -9,6 +9,7 @@
 #import "EXCalendarView.h"
 #import "EXCalendarApperance.h"
 #import "EXCalendarCollectionViewCell.h"
+#import "EXCalendarManager.h"
 
 @interface EXCalendarView ()<UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate>
 
@@ -29,9 +30,19 @@
 @property (nonatomic, assign) NSInteger systemCurrentMonthIndex;
 
 /**
+ Selected index path for obtain cell.
+ */
+@property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
+
+/**
  Cell item size.
  */
 @property (nonatomic, assign) CGSize itemSize;
+
+/**
+ Whether loaded.
+ */
+@property (nonatomic, assign) BOOL isLoaded;
 
 @end
 
@@ -74,7 +85,7 @@
 }
 
 
-#pragma mark -LoadData
+#pragma mark - LoadData
 - (void)createCalendarData {
     [self createMonthsData];
 }
@@ -214,15 +225,64 @@
     NSArray *monthData = _monthsData[indexPath.section];
     EXCalendarDayItem *model = monthData[indexPath.row];
     [cell loadData:model];
+    
+    if ([self isToday:model.date]) {
+        self.currentSelectedIndexPath = indexPath;
+    }
+    
     return cell;
 }
 
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    EXCalendarCollectionViewCell *cell = (EXCalendarCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+    cell.isSelected = YES;
     
+    // Selected circle change.
+    if (indexPath.section != _currentSelectedIndexPath.section || indexPath.row != _currentSelectedIndexPath.row) {
+        EXCalendarCollectionViewCell *lastCell = (EXCalendarCollectionViewCell*)[collectionView cellForItemAtIndexPath:_currentSelectedIndexPath];
+        lastCell.isSelected = NO;
+        self.currentSelectedIndexPath = indexPath;
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(calendarDidSelectedDate:)]) {
+        [self.delegate calendarDidSelectedDate:cell.viewData.date];
+    }
 }
 
 
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+//    if (indexPath.section != _currentSelectedIndexPath.section) {
+//        // The same day is selected by default for other months
+//        NSIndexPath *indexPathForMonth = [NSIndexPath indexPathForRow:indexPath.section inSection:_currentSelectedIndexPath.row];
+//        EXCalendarCollectionViewCell *currentCell = (EXCalendarCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPathForMonth];
+//        currentCell.isSelected = YES;
+//
+//        EXCalendarCollectionViewCell *lastCell = (EXCalendarCollectionViewCell*)[collectionView cellForItemAtIndexPath:_currentSelectedIndexPath];
+//        lastCell.isSelected = NO;
+//        self.currentSelectedIndexPath = indexPath;
+//    }
+//    NSLog(@"%@", indexPath);
+}
+
+
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+//    NSIndexPath *indexPath = [self obtainCurrentIndexPath];
+//    if (indexPath.section != _currentSelectedIndexPath.section) {
+//        // The same day is selected by default for other months
+//        NSIndexPath *indexPathForMonth = [NSIndexPath indexPathForRow:indexPath.section inSection:_currentSelectedIndexPath.row];
+//        EXCalendarCollectionViewCell *currentCell = (EXCalendarCollectionViewCell*)[_calendarCollectionView cellForItemAtIndexPath:indexPathForMonth];
+//        currentCell.isSelected = YES;
+//        
+//        EXCalendarCollectionViewCell *lastCell = (EXCalendarCollectionViewCell*)[_calendarCollectionView cellForItemAtIndexPath:_currentSelectedIndexPath];
+//        lastCell.isSelected = NO;
+//        self.currentSelectedIndexPath = indexPath;
+//    }
+}
+
+
+#pragma mark - Calendar position
 - (void)scrollViewDidScrollToSystemCurrentMonth {
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:17 inSection:_systemCurrentMonthIndex];
@@ -235,6 +295,14 @@
 }
 
 
+- (NSIndexPath *)obtainCurrentIndexPath {
+    CGPoint point = [self convertPoint:self.calendarCollectionView.center toView:self.calendarCollectionView];
+    NSIndexPath *indexPath = [self.calendarCollectionView indexPathForItemAtPoint:point];
+    return indexPath;
+}
+
+
+#pragma mark - Date compare
 - (BOOL)isSameDay:(NSDate *)date
       compareDate:(NSDate *)compareDate {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -242,6 +310,20 @@
     dateFormatter.dateFormat = @"yyyy-MM-dd";
     
     return [[dateFormatter stringFromDate:date] isEqualToString:[dateFormatter stringFromDate:compareDate]];
+}
+
+
+- (BOOL)isToday:(NSDate *)date {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.timeZone = [EXCalendarApperance apperance].calendar.timeZone;
+    dateFormatter.dateFormat = @"yyyy-MM-dd";
+    
+    NSDate *gmtDate = [NSDate date];
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    NSInteger interval = [zone secondsFromGMTForDate:gmtDate];
+    NSDate *currentDate = [gmtDate  dateByAddingTimeInterval: interval];
+    
+    return [[dateFormatter stringFromDate:date] isEqualToString:[dateFormatter stringFromDate:currentDate]];
 }
 
 @end

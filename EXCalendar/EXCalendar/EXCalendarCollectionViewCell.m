@@ -27,12 +27,6 @@
  */
 @property (nonatomic, strong) EXCalendarCircleView *eventCircle;
 
-
-/**
- Cell data.
- */
-@property (nonatomic, strong) EXCalendarDayItem *viewData;
-
 @end
 
 
