@@ -102,21 +102,21 @@
 			children = (
 				077B3AAE21945DDF00D87F8E /* EXCalendarApperance.h */,
 				077B3AAB21945DDF00D87F8E /* EXCalendarApperance.m */,
+				071C630F219BFD26008A309B /* EXCalendarCircleView.h */,
+				071C6310219BFD26008A309B /* EXCalendarCircleView.m */,
 				077B3AAD21945DDF00D87F8E /* EXCalendarCollectionViewCell.h */,
 				077B3AA921945DDF00D87F8E /* EXCalendarCollectionViewCell.m */,
 				077B3AB021945DDF00D87F8E /* EXCalendarCollectionViewFlowLayout.h */,
 				077B3AAC21945DDF00D87F8E /* EXCalendarCollectionViewFlowLayout.m */,
+				07F26B9821991EB300BADA18 /* EXCalendarDayItem.h */,
+				07F26B9921991EB300BADA18 /* EXCalendarDayItem.m */,
+				071C6312219C52F6008A309B /* EXCalendarDelegate.h */,
 				077B3AAA21945DDF00D87F8E /* EXCalendarManager.h */,
 				077B3AAF21945DDF00D87F8E /* EXCalendarManager.m */,
 				07F8E34721958CB8009F8CDA /* EXCalendarView.h */,
 				07F8E34821958CB8009F8CDA /* EXCalendarView.m */,
 				07F8E34A21958FDB009F8CDA /* EXCalendarWeekView.h */,
 				07F8E34B21958FDB009F8CDA /* EXCalendarWeekView.m */,
-				07F26B9821991EB300BADA18 /* EXCalendarDayItem.h */,
-				07F26B9921991EB300BADA18 /* EXCalendarDayItem.m */,
-				071C630F219BFD26008A309B /* EXCalendarCircleView.h */,
-				071C6310219BFD26008A309B /* EXCalendarCircleView.m */,
-				071C6312219C52F6008A309B /* EXCalendarDelegate.h */,
 			);
 			path = EXCalendar;
 			sourceTree = "<group>";

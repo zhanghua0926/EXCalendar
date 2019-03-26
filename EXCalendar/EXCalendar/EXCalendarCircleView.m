@@ -8,37 +8,60 @@
 
 #import "EXCalendarCircleView.h"
 
+#import "EXCalendarCircleView.h"
+
+@interface EXCalendarCircleView ()
+
+@property (nonatomic, assign) CGFloat radius;
+
+@end
+
+
 @implementation EXCalendarCircleView
 
-- (instancetype)init {
-    self = [super init];
-    if(self){
-        self.color = [UIColor whiteColor];
+- (instancetype)initWithRadius:(CGFloat)radius {
+    if (self = [super init]) {
+        self.backgroundColor = [UIColor whiteColor];
+        self.radius = radius;
     }
-    
     return self;
 }
 
 
 - (void)drawRect:(CGRect)rect {
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    // 获取当前图形的上下文
+    CGContextRef context = UIGraphicsGetCurrentContext();
     
-    CGContextSetFillColorWithColor(ctx, [[UIColor whiteColor] CGColor]);
-    CGContextFillRect(ctx, rect);
+    // 添加一个圆形路径到上下文中
     
-    rect = CGRectInset(rect, .5, .5);
+    /**
+     *  context  图形上下文
+     *  x,y 圆心坐标点
+     *  radius 半径
+     *  angle 开始和结束的角度  0度在x轴正方向，角度沿顺时针方向增大
+     *  clockwise 画的方向 0表示顺时针画圆，1表示逆时针画
+     */
+    CGContextAddArc(context, self.bounds.size.width / 2, self.bounds.size.height / 2, _radius, 0, 2*M_PI, 0);
     
-    CGContextSetStrokeColorWithColor(ctx, [self.color CGColor]);
-    CGContextSetFillColorWithColor(ctx, [self.color CGColor]);
+    [self.fillColor setFill];
+    [self.strokeColor setStroke];
+    CGContextSetLineWidth(context, 1);
     
-    CGContextAddEllipseInRect(ctx, rect);
-    CGContextFillEllipseInRect(ctx, rect);
+    // 绘制线条
+    CGContextDrawPath(context, kCGPathFillStroke);
     
-    CGContextFillPath(ctx);
 }
 
-- (void)setColor:(UIColor *)color {
-    _color = color;
+
+- (void)setStrokeColor:(UIColor *)strokeColor {
+    _strokeColor = strokeColor;
+    
+    [self setNeedsDisplay];
+}
+
+
+- (void)setFillColor:(UIColor *)fillColor {
+    _fillColor = fillColor;
     
     [self setNeedsDisplay];
 }

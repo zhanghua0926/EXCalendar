@@ -44,6 +44,16 @@
  */
 @property (nonatomic, assign) BOOL isLoaded;
 
+/**
+ Event date array.
+ */
+@property (nonatomic, strong) NSArray *eventDateArray;
+
+/**
+ Need scroll to center month.
+ */
+@property (nonatomic, assign) BOOL needScrollToCenter;
+
 @end
 
 
@@ -94,12 +104,10 @@
 - (void)createMonthsData {
     NSCalendar *calendar = _apperance.calendar;
     
-    
     if (self.currentDate == nil) {
         self.currentDate = _apperance.defaultDate;
         self.selectedDate = self.currentDate;
     }
-    
     
     NSMutableArray *monthsData = [@[] mutableCopy];
     for(int i = 0; i < _apperance.months; i++){
@@ -198,8 +206,37 @@
         
         currentDate = [calendar dateByAddingComponents:dayComponent toDate:currentDate options:0];
     }
-    return  daysOfweek;
     
+    return  daysOfweek;
+}
+
+
+- (void)updateCalendar {
+    [self createCalendarData];
+    [self refreshEventDate:_eventDateArray];
+    [UIView performWithoutAnimation:^{
+        [self.calendarCollectionView reloadData];
+    }];
+}
+
+
+- (void)refreshEventDate:(NSArray *)dateArray {
+    if (!dateArray) {
+        return;
+    }
+    
+    self.eventDateArray = dateArray;
+    for (NSArray *monthDay in _monthsData) {
+        for (EXCalendarDayItem *item in monthDay) {
+            NSDateFormatter *format = [[NSDateFormatter alloc] init];
+            [format setDateFormat:@"yyyy-MM-dd"];
+            NSString *dateString = [format stringFromDate:item.date];
+            NSArray *predicateArray = [_eventDateArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self = %@", dateString]];
+            if (predicateArray && predicateArray.count > 0) {
+                item.eventDate = [predicateArray firstObject];
+            }
+        }
+    }
 }
 
 
@@ -252,46 +289,49 @@
 
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-//    if (indexPath.section != _currentSelectedIndexPath.section) {
-//        // The same day is selected by default for other months
-//        NSIndexPath *indexPathForMonth = [NSIndexPath indexPathForRow:indexPath.section inSection:_currentSelectedIndexPath.row];
-//        EXCalendarCollectionViewCell *currentCell = (EXCalendarCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPathForMonth];
-//        currentCell.isSelected = YES;
-//
-//        EXCalendarCollectionViewCell *lastCell = (EXCalendarCollectionViewCell*)[collectionView cellForItemAtIndexPath:_currentSelectedIndexPath];
-//        lastCell.isSelected = NO;
-//        self.currentSelectedIndexPath = indexPath;
-//    }
-//    NSLog(@"%@", indexPath);
+    self.currentSelectedIndexPath = [self obtainCurrentIndexPath];
+    self.currentDate = _monthsData[_currentSelectedIndexPath.section][15].date;
+    
+    if ([self.delegate respondsToSelector:@selector(calendarDidScrollYear:month:)]) {
+        NSCalendar *calendar = _apperance.calendar;
+        
+        NSDateComponents *currentDateComponents =[calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday|NSCalendarUnitWeekOfMonth|NSCalendarUnitHour fromDate:_currentDate];
+        [self.delegate calendarDidScrollYear:currentDateComponents.year month:currentDateComponents.month];
+    }
+    
+    if (_needScrollToCenter) {
+        _needScrollToCenter = NO;
+        [self scrollToCenterMonth];
+    }
 }
 
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-//    NSIndexPath *indexPath = [self obtainCurrentIndexPath];
-//    if (indexPath.section != _currentSelectedIndexPath.section) {
-//        // The same day is selected by default for other months
-//        NSIndexPath *indexPathForMonth = [NSIndexPath indexPathForRow:indexPath.section inSection:_currentSelectedIndexPath.row];
-//        EXCalendarCollectionViewCell *currentCell = (EXCalendarCollectionViewCell*)[_calendarCollectionView cellForItemAtIndexPath:indexPathForMonth];
-//        currentCell.isSelected = YES;
-//        
-//        EXCalendarCollectionViewCell *lastCell = (EXCalendarCollectionViewCell*)[_calendarCollectionView cellForItemAtIndexPath:_currentSelectedIndexPath];
-//        lastCell.isSelected = NO;
-//        self.currentSelectedIndexPath = indexPath;
-//    }
+    [self refreshEventDate:_eventDateArray];
+    if (_currentSelectedIndexPath.section == 0 || _currentSelectedIndexPath.section == _monthsData.count - 1) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.needScrollToCenter = YES;
+            [self updateCalendar];
+        });
+    }
+}
+
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    [self refreshEventDate:_eventDateArray];
+    if (_currentSelectedIndexPath.section == 0 || _currentSelectedIndexPath.section == _monthsData.count - 1) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.needScrollToCenter = YES;
+            [self updateCalendar];
+        });
+    }
 }
 
 
 #pragma mark - Calendar position
-- (void)scrollViewDidScrollToSystemCurrentMonth {
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:17 inSection:_systemCurrentMonthIndex];
-    [self.calendarCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
-}
-
-
-- (void)repositionViews {
-    [self.calendarCollectionView setContentOffset:CGPointMake(self.frame.size.width*round(_monthsData.count / 2), 0)];
+- (void)scrollToCenterMonth {
+    [self.calendarCollectionView setContentOffset:CGPointMake(self.frame.size.width * round(_monthsData.count / 2), 0)];
 }
 
 
@@ -299,6 +339,18 @@
     CGPoint point = [self convertPoint:self.calendarCollectionView.center toView:self.calendarCollectionView];
     NSIndexPath *indexPath = [self.calendarCollectionView indexPathForItemAtPoint:point];
     return indexPath;
+}
+
+
+- (void)scrollToPreviousMonth {
+    NSInteger index = _currentSelectedIndexPath.section - 1;
+    [self.calendarCollectionView setContentOffset:CGPointMake(self.frame.size.width * index, 0) animated:YES];
+}
+
+
+- (void)scrollToNextMonth {
+    NSInteger index = _currentSelectedIndexPath.section + 1;
+    [self.calendarCollectionView setContentOffset:CGPointMake(self.frame.size.width * index, 0) animated:YES];
 }
 
 
@@ -318,12 +370,7 @@
     dateFormatter.timeZone = [EXCalendarApperance apperance].calendar.timeZone;
     dateFormatter.dateFormat = @"yyyy-MM-dd";
     
-    NSDate *gmtDate = [NSDate date];
-    NSTimeZone *zone = [NSTimeZone systemTimeZone];
-    NSInteger interval = [zone secondsFromGMTForDate:gmtDate];
-    NSDate *currentDate = [gmtDate  dateByAddingTimeInterval: interval];
-    
-    return [[dateFormatter stringFromDate:date] isEqualToString:[dateFormatter stringFromDate:currentDate]];
+    return [[dateFormatter stringFromDate:date] isEqualToString:[dateFormatter stringFromDate:[NSDate date]]];
 }
 
 @end

@@ -58,10 +58,28 @@
 
 
 
+/**
+ Create calendar data.
+ */
 - (void)createCalendarData;
 
-- (void)scrollViewDidScrollToSystemCurrentMonth;
+/**
+ Scroll to current month.
+ */
+- (void)scrollToCenterMonth;
 
-- (void)repositionViews;
+/**
+ Scroll to previous month section.
+ */
+- (void)scrollToPreviousMonth;
 
+/**
+ Scroll to next month section.
+ */
+- (void)scrollToNextMonth;
+
+/**
+ Refresh specified date.
+ */
+- (void)refreshEventDate:(NSArray *)dateArray;
 @end

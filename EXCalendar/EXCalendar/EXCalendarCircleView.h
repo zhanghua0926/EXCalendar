@@ -11,6 +11,11 @@
 
 @interface EXCalendarCircleView : UIView
 
-@property (nonatomic, strong) UIColor *color;
+@property (nonatomic, strong) UIColor *strokeColor;
+
+@property (nonatomic, strong) UIColor *fillColor;
+
+
+- (instancetype)initWithRadius:(CGFloat)radius;
 
 @end

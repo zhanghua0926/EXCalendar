@@ -42,13 +42,18 @@
 
 
 - (void)createContentView {
-    EXCalendarCircleView *selectedCircle = [[EXCalendarCircleView alloc] initWithFrame:CGRectMake(15, 15, 40, 40)];
-    selectedCircle.layer.cornerRadius = [EXCalendarApperance apperance].dayCircleSize / 2.;
-    selectedCircle.layer.masksToBounds = YES;
-    selectedCircle.layer.borderWidth = 1;
-    selectedCircle.color = [UIColor clearColor];
+    EXCalendarCircleView *selectedCircle = [[EXCalendarCircleView alloc] initWithRadius:19];
+    selectedCircle.frame = CGRectMake(10, 10, 40, 40);
     self.selectedCircle = selectedCircle;
     [self addSubview:_selectedCircle];
+    
+    EXCalendarCircleView *eventCircle = [[EXCalendarCircleView alloc] initWithRadius:19];
+    eventCircle.frame = CGRectMake(10, 10, 40, 40);
+    eventCircle.fillColor = [EXCalendarApperance apperance].dayEventColor;
+    eventCircle.strokeColor = [EXCalendarApperance apperance].dayEventColor;
+    eventCircle.hidden = YES;
+    self.eventCircle = eventCircle;
+    [self addSubview:_eventCircle];
     
     UILabel *dateLabel = [[UILabel alloc] init];
     dateLabel.font = [EXCalendarApperance apperance].dayTextFont;
@@ -109,27 +114,24 @@
     _isSelected = isSelected;
     self.viewData.isSelected = isSelected;
     
-    BOOL animated = isSelected != _isSelected;
-    
-    CGAffineTransform transform = CGAffineTransformIdentity;
-    CGFloat opacity = 1.;
     if(isSelected){
         if(!self.viewData.isOtherMonth){
-            self.selectedCircle.color = [EXCalendarApperance apperance].dayCircleColorSelected;
-            self.selectedCircle.layer.borderColor = [UIColor clearColor].CGColor;
+            self.selectedCircle.fillColor = [EXCalendarApperance apperance].dayCircleColorSelected;
+            self.selectedCircle.strokeColor = [UIColor whiteColor];
             self.dateLabel.textColor = [EXCalendarApperance apperance].dayTextColorSelected;
         }
         
         if ([self isToday]) {
-            self.selectedCircle.color = [EXCalendarApperance apperance].dayCircleColorToday;
+            self.selectedCircle.strokeColor = [EXCalendarApperance apperance].dayCircleColorToday;
+            self.selectedCircle.fillColor = [EXCalendarApperance apperance].dayCircleColorToday;
         }
-        self.selectedCircle.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.1, 0.1);
-        transform = CGAffineTransformIdentity;
     } else {
-        self.selectedCircle.color = [UIColor clearColor];
+        self.selectedCircle.fillColor = [EXCalendarApperance apperance].dayCircleColorSelected;
+        self.selectedCircle.strokeColor = [UIColor whiteColor];
         
         if ([self isToday]){
-            self.selectedCircle.layer.borderColor = [EXCalendarApperance apperance].dayBorderColorToday.CGColor;
+            self.selectedCircle.strokeColor = [EXCalendarApperance apperance].dayBorderColorToday;
+            self.selectedCircle.fillColor = [UIColor whiteColor];
             self.dateLabel.textColor = [EXCalendarApperance apperance].dayTextColor;
         } else {
             
@@ -139,19 +141,9 @@
                 self.dateLabel.textColor = [EXCalendarApperance apperance].dayTextColorOtherMonth;
             }
             
-            self.selectedCircle.layer.borderColor = [UIColor whiteColor].CGColor;
-            self.selectedCircle.color = [UIColor whiteColor];
+            self.selectedCircle.fillColor = [UIColor whiteColor];
+            self.selectedCircle.strokeColor = [UIColor whiteColor];
         }
-    }
-    
-    if(animated) {
-        [UIView animateWithDuration:.1 animations:^{
-            self.selectedCircle.layer.opacity = opacity;
-            self.selectedCircle.transform = transform;
-        }];
-    } else {
-        self.selectedCircle.layer.opacity = opacity;
-        self.selectedCircle.transform = transform;
     }
 }
 

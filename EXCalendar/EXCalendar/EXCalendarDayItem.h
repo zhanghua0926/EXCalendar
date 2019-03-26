@@ -36,4 +36,9 @@
  */
 @property (nonatomic, assign) BOOL showEventDot;
 
+/**
+ Display event date.
+ */
+@property (nonatomic, strong) NSDate *eventDate;
+
 @end

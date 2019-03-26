@@ -20,4 +20,14 @@
     return singleton;
 }
 
+
+- (void)scrollToPreviousMonth {
+    [self.calendarView scrollToPreviousMonth];
+}
+
+
+- (void)scrollToNextMonth {
+    [self.calendarView scrollToNextMonth];
+}
+
 @end

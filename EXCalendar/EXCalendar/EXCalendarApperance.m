@@ -107,11 +107,6 @@
         
         // This time is used to take the calendar, and it does not need to add 8 hours, otherwise the value in NSDateComponents will be wrong。
         return [NSDate date];
-//        NSDate *date = [NSDate date];
-//        NSTimeZone *zone = [NSTimeZone systemTimeZone];
-//        NSInteger interval = [zone secondsFromGMTForDate: date];
-//        NSDate *localeDate = [date  dateByAddingTimeInterval: interval];
-//        return localeDate;
     }
     
     return _defaultDate;

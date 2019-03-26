@@ -19,4 +19,14 @@
  */
 - (void)calendarDidSelectedDate:(NSDate *)date;
 
+
+/**
+ Display the current month.
+ 
+ @param year Current year.
+ @param month Current month.
+ */
+- (void)calendarDidScrollYear:(NSInteger)year
+                        month:(NSInteger)month;
+
 @end

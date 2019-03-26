@@ -32,4 +32,14 @@
  */
 + (EXCalendarManager *)manager;
 
+/**
+ Scroll to previous month section.
+ */
+- (void)scrollToPreviousMonth;
+
+/**
+ Scroll to next month section.
+ */
+- (void)scrollToNextMonth;
+
 @end
