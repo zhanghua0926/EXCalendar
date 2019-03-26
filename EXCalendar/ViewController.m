@@ -9,8 +9,9 @@
 #import "ViewController.h"
 #import "EXCalendarManager.h"
 #import "EXCalendarView.h"
+#import "EXCalendarApperance.h"
 
-@interface ViewController ()
+@interface ViewController ()<EXCalendarDelegate>
 
 @property (nonatomic, strong) EXCalendarManager *manager;
 
@@ -22,9 +23,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    [EXCalendarApperance apperance].hiddenGridLine = YES;
+    
     self.manager = [EXCalendarManager manager];
-    self.manager.calendarView = [[EXCalendarView alloc] initWithFrame:CGRectMake(10, 150, self.view.frame.size.width - 20, 550)];
+    self.manager.calendarView = [[EXCalendarView alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width - 20, 550)];
+    self.manager.calendarView.delegate = self;
     [self.manager.calendarView createCalendarData];
+    [self.manager.calendarView scrollToCenterMonth];
     [self.manager.calendarView.calendarCollectionView reloadData];
     
     [self.view addSubview:_manager.calendarView];

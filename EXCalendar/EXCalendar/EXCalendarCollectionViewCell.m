@@ -43,12 +43,12 @@
 
 - (void)createContentView {
     EXCalendarCircleView *selectedCircle = [[EXCalendarCircleView alloc] initWithRadius:19];
-    selectedCircle.frame = CGRectMake(10, 10, 40, 40);
+    selectedCircle.frame = CGRectMake(5, 7, 40, 40);
     self.selectedCircle = selectedCircle;
     [self addSubview:_selectedCircle];
     
     EXCalendarCircleView *eventCircle = [[EXCalendarCircleView alloc] initWithRadius:19];
-    eventCircle.frame = CGRectMake(10, 10, 40, 40);
+    eventCircle.frame = CGRectMake(5, 7, 40, 40);
     eventCircle.fillColor = [EXCalendarApperance apperance].dayEventColor;
     eventCircle.strokeColor = [EXCalendarApperance apperance].dayEventColor;
     eventCircle.hidden = YES;
