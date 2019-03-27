@@ -95,10 +95,19 @@
 
 - (CGFloat)dayCircleSize {
     if (_dayCircleSize <= 0) {
-        return 40;
+        return 30;
     }
     
     return _dayCircleSize;
+}
+
+
+- (UIColor *)dayTextColorOtherMonth {
+    if (!_dayTextColorOtherMonth) {
+        return [UIColor colorWithRed:152./255 green:147./255 blue:157./255 alpha:1.];
+    }
+    
+    return _dayTextColorOtherMonth;
 }
 
 

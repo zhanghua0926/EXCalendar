@@ -35,6 +35,13 @@
 @property (nonatomic, strong) NSIndexPath *currentSelectedIndexPath;
 
 /**
+ The last index path that need to be change color.
+ */
+@property (nonatomic, strong) NSIndexPath *lastSelectedIndexPath;
+
+@property (nonatomic, strong) EXCalendarCollectionViewCell *lastCell;
+
+/**
  Cell item size.
  */
 @property (nonatomic, assign) CGSize itemSize;
@@ -194,10 +201,6 @@
         item.isOtherMonth = monthIndex != self.currentMonthIndex;
         item.date = currentDate;
         
-        if ([self isSameDay:currentDate compareDate:_currentDate]) {
-            item.isSelected = YES;
-        }
-        
         item.eventCircleColor = _apperance.dayEventColor;
         [daysOfweek addObject:item];
         
@@ -263,8 +266,18 @@
     EXCalendarDayItem *model = monthData[indexPath.row];
     [cell loadData:model];
     
+    _currentSelectedIndexPath = [self obtainCurrentIndexPath];
+    
     if ([self isToday:model.date]) {
         self.currentSelectedIndexPath = indexPath;
+    }
+    
+    if (_lastSelectedIndexPath.section != _currentSelectedIndexPath.section) {
+        EXCalendarCollectionViewCell *lastCell = (EXCalendarCollectionViewCell*)[collectionView cellForItemAtIndexPath:_lastSelectedIndexPath];
+        lastCell.isSelected = NO;
+    } else {
+        EXCalendarCollectionViewCell *lastCell = (EXCalendarCollectionViewCell*)[collectionView cellForItemAtIndexPath:_lastSelectedIndexPath];
+        lastCell.isSelected = YES;
     }
     
     return cell;
@@ -276,10 +289,10 @@
     cell.isSelected = YES;
     
     // Selected circle change.
-    if (indexPath.section != _currentSelectedIndexPath.section || indexPath.row != _currentSelectedIndexPath.row) {
-        EXCalendarCollectionViewCell *lastCell = (EXCalendarCollectionViewCell*)[collectionView cellForItemAtIndexPath:_currentSelectedIndexPath];
+    if (indexPath.section != _currentSelectedIndexPath.section || indexPath.row != _lastSelectedIndexPath.row) {
+        EXCalendarCollectionViewCell *lastCell = (EXCalendarCollectionViewCell*)[collectionView cellForItemAtIndexPath:_lastSelectedIndexPath];
         lastCell.isSelected = NO;
-        self.currentSelectedIndexPath = indexPath;
+        self.lastSelectedIndexPath = indexPath;
     }
     
     if ([self.delegate respondsToSelector:@selector(calendarDidSelectedDate:)]) {

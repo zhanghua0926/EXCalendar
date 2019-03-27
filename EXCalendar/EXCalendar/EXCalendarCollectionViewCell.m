@@ -42,13 +42,13 @@
 
 
 - (void)createContentView {
-    EXCalendarCircleView *selectedCircle = [[EXCalendarCircleView alloc] initWithRadius:19];
-    selectedCircle.frame = CGRectMake(5, 7, 40, 40);
+    EXCalendarCircleView *selectedCircle = [[EXCalendarCircleView alloc] initWithRadius:14];
+    selectedCircle.frame = CGRectMake(10, 4, 30, 30);
     self.selectedCircle = selectedCircle;
     [self addSubview:_selectedCircle];
     
-    EXCalendarCircleView *eventCircle = [[EXCalendarCircleView alloc] initWithRadius:19];
-    eventCircle.frame = CGRectMake(5, 7, 40, 40);
+    EXCalendarCircleView *eventCircle = [[EXCalendarCircleView alloc] initWithRadius:14];
+    eventCircle.frame = CGRectMake(10, 4, 30, 30);
     eventCircle.fillColor = [EXCalendarApperance apperance].dayEventColor;
     eventCircle.strokeColor = [EXCalendarApperance apperance].dayEventColor;
     eventCircle.hidden = YES;
@@ -104,7 +104,12 @@
     
     self.dateLabel.text = [dateFormatter stringFromDate:model.date];
     CGSize size = [self sizeForLabel:_dateLabel];
-    self.dateLabel.frame = CGRectMake(15, 17, size.width, size.height);
+    self.dateLabel.frame = CGRectMake(16, 10, size.width, size.height);
+    
+    CGPoint point = _selectedCircle.center;
+    point.x = _dateLabel.center.x;
+    self.selectedCircle.center = point;
+    self.eventCircle.center = point;
     
     self.isSelected = model.isSelected;
 }
