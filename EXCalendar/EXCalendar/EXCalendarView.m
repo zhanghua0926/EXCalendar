@@ -39,7 +39,10 @@
  */
 @property (nonatomic, strong) NSIndexPath *lastSelectedIndexPath;
 
-@property (nonatomic, strong) EXCalendarCollectionViewCell *lastCell;
+/**
+ The last month that need to be change color.
+ */
+@property (nonatomic, assign) int lastSelectedMonth;
 
 /**
  Cell item size.
@@ -264,20 +267,17 @@
     
     NSArray *monthData = _monthsData[indexPath.section];
     EXCalendarDayItem *model = monthData[indexPath.row];
-    [cell loadData:model];
     
-    _currentSelectedIndexPath = [self obtainCurrentIndexPath];
+    if (_lastSelectedMonth == model.dateOfMonth && _lastSelectedIndexPath && indexPath.row == _lastSelectedIndexPath.row) {
+        model.isSelected = YES;
+    } else {
+        model.isSelected = NO;
+    }
+    
+    [cell loadData:model];
     
     if ([self isToday:model.date]) {
         self.currentSelectedIndexPath = indexPath;
-    }
-    
-    if (_lastSelectedIndexPath.section != _currentSelectedIndexPath.section) {
-        EXCalendarCollectionViewCell *lastCell = (EXCalendarCollectionViewCell*)[collectionView cellForItemAtIndexPath:_lastSelectedIndexPath];
-        lastCell.isSelected = NO;
-    } else {
-        EXCalendarCollectionViewCell *lastCell = (EXCalendarCollectionViewCell*)[collectionView cellForItemAtIndexPath:_lastSelectedIndexPath];
-        lastCell.isSelected = YES;
     }
     
     return cell;
@@ -289,10 +289,12 @@
     cell.isSelected = YES;
     
     // Selected circle change.
-    if (indexPath.section != _currentSelectedIndexPath.section || indexPath.row != _lastSelectedIndexPath.row) {
+    if (cell.viewData.dateOfMonth != _lastSelectedMonth || indexPath.row != _lastSelectedIndexPath.row) {
         EXCalendarCollectionViewCell *lastCell = (EXCalendarCollectionViewCell*)[collectionView cellForItemAtIndexPath:_lastSelectedIndexPath];
         lastCell.isSelected = NO;
+        
         self.lastSelectedIndexPath = indexPath;
+        self.lastSelectedMonth = cell.viewData.dateOfMonth;
     }
     
     if ([self.delegate respondsToSelector:@selector(calendarDidSelectedDate:)]) {

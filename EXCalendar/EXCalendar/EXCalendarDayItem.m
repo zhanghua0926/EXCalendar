@@ -7,7 +7,18 @@
 //
 
 #import "EXCalendarDayItem.h"
+#import "EXCalendarApperance.h"
 
 @implementation EXCalendarDayItem
+
+- (void)setDate:(NSDate *)date {
+    _date = date;
+    
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    dateFormatter.timeZone = [EXCalendarApperance apperance].calendar.timeZone;
+    [dateFormatter setDateFormat:@"MM"];
+    
+    self.dateOfMonth = [[dateFormatter stringFromDate:date] intValue];
+}
 
 @end

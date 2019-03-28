@@ -17,6 +17,11 @@
 @property (nonatomic, strong) NSDate *date;
 
 /**
+ Month
+ */
+@property (nonatomic, assign) int dateOfMonth;
+
+/**
  Whether other month.
  */
 @property (nonatomic, assign) BOOL isOtherMonth;
