@@ -275,6 +275,7 @@
     }
     
     [cell loadData:model];
+    [cell loadEvent:model.eventDate];
     
     if ([self isToday:model.date]) {
         self.currentSelectedIndexPath = indexPath;

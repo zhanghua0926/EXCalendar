@@ -29,4 +29,12 @@
  */
 - (void)loadData:(EXCalendarDayItem *)model;
 
+
+/**
+ Load event date.
+ 
+ @param date Event date.
+ */
+- (void)loadEvent:(NSDate *)date;
+
 @end

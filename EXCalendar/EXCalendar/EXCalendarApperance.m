@@ -111,6 +111,15 @@
 }
 
 
+- (UIColor *)dayEventColor {
+    if (!_dayEventColor) {
+        return [UIColor colorWithRed:254./255 green:161./255 blue:88./255 alpha:1.];
+    }
+    
+    return _dayEventColor;
+}
+
+
 - (NSDate *)defaultDate {
     if (!_defaultDate) {
         

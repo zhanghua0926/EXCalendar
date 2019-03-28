@@ -115,6 +115,15 @@
 }
 
 
+- (void)loadEvent:(NSDate *)date {
+    if (date) {
+        self.eventCircle.hidden = NO;
+    } else {
+        self.eventCircle.hidden = YES;
+    }
+}
+
+
 - (void)setIsSelected:(BOOL)isSelected {
     _isSelected = isSelected;
     self.viewData.isSelected = isSelected;

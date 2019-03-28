@@ -24,6 +24,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    NSArray *eventDates = @[@"2019-03-11",@"2019-03-18",@"2019-03-25"];
+    
     UILabel *yearMonthLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 45, self.view.frame.size.width, 20)];
     yearMonthLabel.textColor = [UIColor blackColor];
     yearMonthLabel.textAlignment = NSTextAlignmentCenter;
@@ -43,6 +45,7 @@
     self.manager.calendarView.delegate = self;
     [self.manager.calendarView createCalendarData];
     [self.manager.calendarView scrollToCenterMonth];
+    [self.manager.calendarView refreshEventDate:eventDates];
     [self.manager.calendarView.calendarCollectionView reloadData];
     
     [self.view addSubview:_manager.calendarView];
