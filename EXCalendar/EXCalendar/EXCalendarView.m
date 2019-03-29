@@ -73,6 +73,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.apperance = [EXCalendarApperance apperance];
+        self.lastSelectedMonth = -1;
         
         [self createContentView];
     }
@@ -268,12 +269,6 @@
     NSArray *monthData = _monthsData[indexPath.section];
     EXCalendarDayItem *model = monthData[indexPath.row];
     
-    if (_lastSelectedMonth == model.dateOfMonth && _lastSelectedIndexPath && indexPath.row == _lastSelectedIndexPath.row) {
-        model.isSelected = YES;
-    } else {
-        model.isSelected = NO;
-    }
-    
     [cell loadData:model];
     [cell loadEvent:model.eventDate];
     
@@ -290,8 +285,25 @@
     cell.isSelected = YES;
     
     // Selected circle change.
-    if (cell.viewData.dateOfMonth != _lastSelectedMonth || indexPath.row != _lastSelectedIndexPath.row) {
+    if ((cell.viewData.dateOfMonth != _lastSelectedMonth || indexPath.row != _lastSelectedIndexPath.row)) {
         EXCalendarCollectionViewCell *lastCell = (EXCalendarCollectionViewCell*)[collectionView cellForItemAtIndexPath:_lastSelectedIndexPath];
+        
+        BOOL isOtherMonth = NO;
+        if (!lastCell) {
+            [collectionView scrollToItemAtIndexPath:_lastSelectedIndexPath atScrollPosition:0 animated:NO];
+            [collectionView layoutIfNeeded];
+            
+            lastCell = (EXCalendarCollectionViewCell*)[collectionView cellForItemAtIndexPath:_lastSelectedIndexPath];
+            
+            if (_lastSelectedMonth >=0) {
+                isOtherMonth = YES;
+            }
+        }
+        
+        if (isOtherMonth) {
+            [collectionView setContentOffset:CGPointMake(self.frame.size.width * indexPath.section, 0) animated:NO];
+        }
+        
         lastCell.isSelected = NO;
         
         self.lastSelectedIndexPath = indexPath;
@@ -358,15 +370,15 @@
 }
 
 
-- (void)scrollToPreviousMonth {
+- (void)scrollToPreviousMonth:(BOOL)animated {
     NSInteger index = _currentSelectedIndexPath.section - 1;
-    [self.calendarCollectionView setContentOffset:CGPointMake(self.frame.size.width * index, 0) animated:YES];
+    [self.calendarCollectionView setContentOffset:CGPointMake(self.frame.size.width * index, 0) animated:animated];
 }
 
 
-- (void)scrollToNextMonth {
+- (void)scrollToNextMonth:(BOOL)animated {
     NSInteger index = _currentSelectedIndexPath.section + 1;
-    [self.calendarCollectionView setContentOffset:CGPointMake(self.frame.size.width * index, 0) animated:YES];
+    [self.calendarCollectionView setContentOffset:CGPointMake(self.frame.size.width * index, 0) animated:animated];
 }
 
 
